@@ -11,31 +11,28 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh
-                '''python3 -m pip install --upgrade pip'''
-                '''python3 -m pip install -r requirements.txt'''
+                sh 'python3 -m pip install --upgrade pip'
+                sh 'python3 -m pip install -r requirements.txt'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'python -m pytest tests/ --verbose'
+                sh 'python3 -m pytest tests/ --verbose'
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build Image with Podman') {
             steps {
-                sh 'docker build -t chatbot-app:latest .'
+                sh 'podman build -t chatbot-app:latest .'
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy with Podman') {
             steps {
-                sh '''
-                    docker stop chatbot || true
-                    docker rm chatbot || true
-                    docker run -d --name chatbot -p 5000:5000 chatbot-app:latest
-                '''
+                sh 'podman stop chatbot || true'
+                sh 'podman rm chatbot || true'
+                sh 'podman run -d --name chatbot -p 5000:5000 chatbot-app:latest'
             }
         }
     }
