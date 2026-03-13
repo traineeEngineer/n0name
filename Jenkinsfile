@@ -5,7 +5,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/traineeEngineer/AI-ML-trainee.git'
+                    url: 'https://github.com/traineeEngineer/n0name.git'
             }
         }
 
