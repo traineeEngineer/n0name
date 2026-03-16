@@ -21,7 +21,7 @@ pipeline {
             }
         }
 
-        stage('Process PDF's'){
+        stage('Process PDFs'){
               steps{
                   sh'''
                    for pdf in pdfs/*.pdf; do
