@@ -21,6 +21,17 @@ pipeline {
             }
         }
 
+        stage('Process PDF's'){
+              steps{
+                  sh'''
+                   for pdf in pdfs/*.pdf; do
+                    echo "Processing: $pdf"
+                    python3 pdf_extractor.py "$pdf"
+                    done
+                  '''
+              }
+        }     
+
         stage('Build Image') {
             steps {
                 echo 'Build stage - Podman not available in Jenkins container'
