@@ -24,10 +24,16 @@ pipeline {
         stage('Process PDFs'){
               steps{
                   sh'''
-                   for pdf in pdfs/*.pdf; do
-                    echo "Processing: $pdf"
-                    python3 pdf_extractor.py "$pdf"
-                    done
+                   COUNT=$(find pdfs/ -name "*.pdf" 2>/dev/null | wc -l)
+                    echo "Found $COUNT PDF file(s)"
+                    if [ "$COUNT" -eq 0 ]; then
+                        echo "No PDF files found in pdfs/ folder"
+                    else
+                        find pdfs/ -name "*.pdf" | while read pdf; do
+                            echo "Processing: $pdf"
+                            python3 pdf_extractor.py "$pdf"
+                        done
+                    fi
                   '''
               }
         }     
